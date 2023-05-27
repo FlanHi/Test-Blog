@@ -5,9 +5,11 @@
 {% if current_user.is_authenticated %}
     <div class="row">
         <div class="col-md-12">
+            <!-- Greetings -->
             <p>
                 Hi <span class='text-success'>{{ current_user.username }}</span>, say something:
             </p>
+            <!-- Post something -->
             <form action="" method="post" novalidate>
                 
                 {{ form.hidden_tag() }}
@@ -29,41 +31,35 @@
                     {{ form.submit() }}
                 </p>
             </form>
+            <!-- Display posts -->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Title</th>
+                            <th>Body</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                            <tr>
+                                <td><img src="{{ post.author.avatar(36) }}" alt="{{ post.title }}"></td>
+                                <td>{{ post.title }}</td>
+                                <td>
+                                    {{ post.author.username }} said: <br>
+                                    {{ post.body }}
+                                </td>
+                                <td>{{ post.timestamp }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 {% else %}
             <a href="{{ url_for('login') }}">Please log in to send a message</a>
 {% endif %}
         </div>
     </div>
-            {% for post in posts %}
-                <!-- {% if post %} -->
-                    <table>
-                        <tr valign="top">
-                            <div class="text-align center border border-dark col-md-6">
-                                <td><div class="col-md-3">Avatar: <img src='{{ post.author.avatar(36) }}'width="100px" height="100px" style="padding: 10px;"></div> </td>
-                                <div class="col-md-3 border border-dark">TItle: <h2>{{ post.title }}</h2></div>
-                            </div>
-                                <button type="button" class="btn btn-primary col-md-6" data-toggle="modal" data-target="#post-modal-{{ post.id }}" >Show more</button>
-                
-                                <div class="modal fade" id="post-modal-{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="post-modal-{{ post.id }}-label" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="row">
-                                                <div class="col-md-2 border border-dark">Avatar: <img src='{{ post.author.avatar(36) }}' width="100px" height="100px" style="padding: 10px;"></div> 
-                                                <div class="col-md-6 border border-dark">Message: <h2>{{ post.body }}</h2></div>
-                                                <div class="col-md-2 border border-dark">Username: <h2>{{ post.author.username }}</h2></div>
-                                                <div class="col-md-2 border border-dark">Uploaded: <h2>{{ post.timestamp }}</h2></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                        </tr>
-                    </table>
-                <!-- {% endif %} -->
-            {% endfor %}
-        </div>
-    </div>
-
 
 
 
